@@ -1,22 +1,29 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
+import "../App.scss";
 
 function Login() {
 
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const navigate = useNavigate();
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   async function submit(e) {
     e.preventDefault();
-    // console.log(email, password);
     try {
-      await axios.post("http://localhost:8000/", {
+      await axios.post("http://localhost:8000/users/signin", {
         email, password
+      }).then(function (res) {
+        const user = res.data.user;
+        localStorage.setItem("username", user.username)
+        localStorage.setItem("token", res.data.token);
+        navigate("/home")
       })
     }
     catch (e) {
-      console.log(e);
+      alert(e.response.data.message)
     }
   }
 
@@ -33,7 +40,6 @@ function Login() {
           <input type="password" name="password" onChange={(e) => setPassword(e.target.value)} />
         </div>
         <button type="button" onClick={(e) => submit(e)}>Login</button>
-        {/* <input type="submit" onClick={submit} /> */}
       </form>
       <Link to="/register">Register</Link>
     </div>

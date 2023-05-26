@@ -1,15 +1,18 @@
-.display-board {
-  width: 100%;
-  background-color: aqua;
-  padding: 5%;
+input {
+  width: 200px;
+  height: 30px;
+
 }
 
-.number {
-  color: red;
-  font-size: 75px;
-  text-align: center;
+button {
+  width: 200px;
+  height: 30px;
 }
 
-.mrgnbtm {
-  margin-top: 20px;
+.login, .register, .home {
+  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
 }

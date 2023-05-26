@@ -1,20 +1,33 @@
 const express = require('express');
-const path = require('path');
-const cors = require("cors");
-
 const app = express();
+const dotenv = require("dotenv");
+const cors = require("cors");
+const mongoose = require("mongoose");
+
+dotenv.config();
+
+const userRouter = require('./routes/userRoutes');
+const noteRouter = require('./routes/noteRoutes');
+
 app.use(express.json());
-app.use(express.urlencoded({extended: true}));
 app.use(cors());
-port = 8000;
 
+const PORT = process.env.PORT || 8000;
 
+mongoose.connect(process.env.MONGO_URL)
+.then(() => {
+  app.listen(PORT, () => {
+    console.log(`Server listening on the port: ${PORT}`);
+  });
+  console.log("Connected to database");
+})
+.catch((e) => {
+  console.log(e);
+})
 
+app.use("/users", userRouter);
+app.use("/notes", noteRouter);
 
-app.post('/', (req, res) => {
-
-});
-
-app.listen(port, () => {
-  console.log(`Server listening on the port:${port}`);
-});
+app.get("/", (req, res) => {
+  res.status(201).json({"name":"Devesh", "age": 23})
+})
